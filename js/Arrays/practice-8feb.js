@@ -51,7 +51,7 @@ for (let i = 0; i < teas.length; i++) {
 }
 // console.log(longestTea);
 
-console.log(teas);
+
 // Problem: For loop to reverse teas
 for (let i = teas.length-1; i >= 0; i--) {
     console.log(teas[i]);
