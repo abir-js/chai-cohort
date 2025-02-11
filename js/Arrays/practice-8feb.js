@@ -53,6 +53,7 @@ for (let i = 0; i < teas.length; i++) {
 
 
 // Problem: For loop to reverse teas
+const reversedTeas = []
 for (let i = teas.length-1; i >= 0; i--) {
-    console.log(teas[i]);
+    reversedTeas.push(teas[i])
 }
