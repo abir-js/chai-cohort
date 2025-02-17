@@ -12,7 +12,7 @@ if(!Array.prototype.myMap) {
 
         for(let i = 0; i<this.length; i++) {
             const value = userFn(this[i], i)
-            console.log(value)
+            // console.log(value)
             result.push(value)
         }
 
@@ -24,5 +24,5 @@ if(!Array.prototype.myMap) {
 const n = arr.map(n => n*2)
 console.log(n);
 
-const n2 = arr.myMap(n => n*2)
-console.log(n2);
+const n3 = arr.myMap(n => n*3)
+console.log(n3);
