@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input {
+            margin: 10px;
+            padding: 8px;
+            width: 150px;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="height">
+            <label for="height">Enter Height (m)</label>
+            <input type="text" id="height" placeholder="e.g., 1.75">
+        </div>
+
+        <div class="weight">
+            <label for="weight">Enter Weight (kg)</label>
+            <input type="text" id="weight" placeholder="e.g., 70">
+        </div>
+
+        <button id="button">Calculate BMI</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        document.getElementById("button").addEventListener('click', () => {
+            let height = parseFloat(document.getElementById('height').value);
+            let weight = parseFloat(document.getElementById('weight').value);
+
+            let bmi = weight / (height * height);
+            document.getElementById('result').innerText = `Your BMI is: ${bmi.toFixed(2)}`;
+        });
+    </script>
+</body>
+
+</html>
