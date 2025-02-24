@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+</head>
+
+<body>
+    <h1>Hi</h1>
+    <div class="container">
+        <div>
+            <input id="input" type="text" placeholder="Enter Task">
+            <button id="add-btn">Add Task</button>
+        </div>
+        <div>
+            <ul id="task-list"></ul>
+            <button id="delAllTask">Delete all</button>
+        </div>
+    </div>
+
+    <script>
+        const addBtn = document.getElementById("add-btn");
+        const todoInput = document.getElementById("input");
+        const ulContainer = document.getElementById("task-list");
+        const delAllTask = document.getElementById("delAllTask");
+
+        addBtn.addEventListener('click', () => {
+            const value = todoInput.value
+
+            const li = document.createElement('li');
+            li.innerText = value;
+
+            const delBtn = document.createElement('button');
+            delBtn.innerText = "X";
+
+            delBtn.addEventListener('click', () => {
+                li.remove();
+            });
+
+            li.appendChild(delBtn);
+            ulContainer.appendChild(li);
+
+            todoInput.value = "";
+        });
+
+        delAllTask.addEventListener('click', () => {
+            ulContainer.innerHTML = "";
+        });
+    </script>
+</body>
+
+</html>
