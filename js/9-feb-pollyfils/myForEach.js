@@ -1,7 +1,7 @@
 const arr = [1, 2, 3, 4, 5];
 
 // Error - forEach doesnot exist
-// Signtire - No retuen, function input, value and index as output
+// Signature - No return, function input, value and index as output
 //calls my function for every value
 
 if (!Array.prototype.myForEach) {
