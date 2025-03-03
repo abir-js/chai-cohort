@@ -4,7 +4,6 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   const height = parseFloat(document.getElementById("height").value);
   const weight = parseFloat(document.getElementById("weight").value);
-  const btn = document.querySelector("button");
   const results = document.querySelector("#results");
 
   if(height === '' || height < 0 || isNaN(height)){
