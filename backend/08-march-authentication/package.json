@@ -1,0 +1,15 @@
+{
+  "name": "08-march-overview",
+  "version": "1.0.0",
+  "description": "example practice",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "abir bhattacharjee",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
