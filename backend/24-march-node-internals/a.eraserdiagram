@@ -1,0 +1,38 @@
+
+
+flowchart TD
+
+    %% Nodes and groups
+    Attendance Process[shape: oval, icon: file-text]
+
+    %% ESP32 Network Group
+    ESP32Network[color: purple] {
+        MasterESP32[icon: microchip, color: purple]
+        RelayModule[shape: diamond, icon: plug]
+        SlaveESP32[icon: microchip, color: purple]
+        FingerprintScanner[icon: fingerprint]
+    }
+
+    %% Backend Processing Group
+    BackendProcessing[color: blue] {
+        FlaskBackend[icon: server, color: blue]
+        Database[icon: database]
+        MLModel[icon: brain]
+    }
+
+    %% Frontend Monitoring Group
+    FrontendMonitoring[color: green] {
+        ReactDashboard[icon: monitor, color: green]
+        Teacher[icon: user]
+    }
+
+    %% Relationships
+    Attendance Process --> MasterESP32
+    MasterESP32 -->|Sends Signal| RelayModule
+    RelayModule -->|Powers ON| SlaveESP32
+    SlaveESP32 -->|Requests Scan| FingerprintScanner
+    FingerprintScanner -->|Reads & Sends Data| FlaskBackend
+    FlaskBackend -->|Stores Data| Database
+    FlaskBackend -->|Processes ML Analysis| MLModel
+    FlaskBackend -->|Sends Attendance Report| ReactDashboard
+    ReactDashboard -->|Displays| Teacher

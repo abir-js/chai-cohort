@@ -1,0 +1,23 @@
+Task
+
+user
+email
+password
+username
+fullname
+ph_number
+
+notes
+id
+title
+color
+created_by_user_id
+
+sub_notes
+id
+note_id(parent_id)
+title
+desc
+completed: bool
+content
+created_by_user_id

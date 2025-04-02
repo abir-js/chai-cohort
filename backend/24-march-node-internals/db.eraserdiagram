@@ -1,0 +1,29 @@
+entity-relationship-diagram
+
+user [icon: user, color: blue] {
+    id string pk
+    username string
+    email string unique
+    password string
+    ph_number string
+}
+
+note [icon: clipboard] {
+    id string pk
+    title string
+    color string
+    created_by_user_id string
+}
+
+sub_notes [icon: clipboard] {
+    id string pk
+    note_id string
+    title string
+    desc string
+    completed string
+    content string
+    created_by_user_id string
+}
+
+note.created_by_user_id > user.id
+sub_notes.note_id <> note.id
