@@ -34,7 +34,7 @@ const registerUser = async (req, res) => {
 
     if (!user) {
       return res.status(400).json({
-        message: "User can't get registered",
+        message: "User not registered",
       });
     }
 
@@ -83,7 +83,7 @@ const registerUser = async (req, res) => {
 };
 
 const verifyUser = async (req, res) => {
-  // get token  from url
+  // get token from url
   const { token } = req.params;
 
   // validate token
@@ -116,13 +116,16 @@ const verifyUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+  // get email pass
   const { email, password } = req.body;
+  // validate
   if (!email || !password) {
     return res.status(400).json({
       message: "both email and password are required",
     });
   }
 
+  // find user based on email
   try {
     const user = await User.findOne({ email }); // not{email: email} because both are same
     if (!user) {
@@ -131,6 +134,7 @@ const loginUser = async (req, res) => {
       });
     }
 
+    // check password
     const isMatch = await bcrypt.compare(password, user.password);
     console.log(isMatch);
     if (!isMatch) {
@@ -139,6 +143,7 @@ const loginUser = async (req, res) => {
       });
     }
 
+    // create JWT
     const token = jwt.sign({ id: user._id, role: user.role }, "shhhhh", {
       expiresIn: "24h",
     });
@@ -146,21 +151,20 @@ const loginUser = async (req, res) => {
     const cookieOptions = {
       httpOnly: true,
       secure: true,
-      maxAge: 24 * 60 * 60 * 1000
-    }
-    res.cookie("test", token, cookieOptions)
+      maxAge: 24 * 60 * 60 * 1000,
+    };
+    res.cookie("token", token, cookieOptions);
 
     res.status(200).json({
       success: true,
-      message: 'Login successful',
+      message: "Login successful",
       token,
       user: {
         id: user._id,
         name: user.name,
-        role: user.role
-      }
-    })
-
+        role: user.role,
+      },
+    });
   } catch (error) {
     return res.status(400).json({
       message: "failed to login",
@@ -168,4 +172,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, verifyUser, loginUser };
+export { registerUser, verifyUser, loginUser, getMe };
