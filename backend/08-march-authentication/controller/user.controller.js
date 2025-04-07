@@ -52,12 +52,12 @@ const registerUser = async (req, res) => {
       port: process.env.MAILTRAP_PORT,
       secure: false, // true for port 465, false for other ports
       auth: {
-        user: process.env.MAILTRAP_HOST,
+        user: process.env.MAILTRAP_USERNAME,
         pass: process.env.MAILTRAP_PASSWORD,
       },
     });
 
-    const mailOPtions = {
+    const mailOptions = {
       from: process.env.MAILTRAP_SENDEREMAIL,
       to: user.email, // list of receivers
       subject: "Verify your email", // Subject line
@@ -66,11 +66,11 @@ const registerUser = async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOPtions);
+    await transporter.sendMail(mailOptions);
 
     // send success status to user
     res.status(201).json({
-      message: "Used registered successfully",
+      message: "User registered successfully",
       success: true,
     });
   } catch (error) {
@@ -172,4 +172,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, verifyUser, loginUser, getMe };
+export { registerUser, verifyUser, loginUser };
