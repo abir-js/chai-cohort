@@ -9,22 +9,25 @@
 
 <body>
     <div class="container">
-        <div class="input-box">
-            <input type="text" name="" id="input-box" placeholder="enter task">
-            <button id="addBtn">add task</button>
+        <div class="input-task">
+            <label for="input">Enter Task</label>
+            <input type="text" name="" id="input">
         </div>
-        <div class="todo-list">
-            <ul id="ul-container">
-                <li>Coding <button>X</button></li>
+        <button id="add-btn">Add Task</button>
+        <div class="display-task">
+            <ul id="ul-list">
+                <li>Code Karo <button>X</button></li>
             </ul>
         </div>
     </div>
 
-
     <script>
-        let inputBox = document.getElementById('input-box').value
-        console.log(inputBox);
-
+        let input = document.getElementById('input').value
+        document.getElementById('add-btn').addEventListener('click', () => {
+            let ul = document.getElementById('ul-list')
+            let newTask = document.createElement()
+            newTask.innerText = input
+        })
     </script>
 </body>
 
