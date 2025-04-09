@@ -144,9 +144,13 @@ const loginUser = async (req, res) => {
     }
 
     // create JWT
-    const token = jwt.sign({ id: user._id, role: user.role }, "shhhhh", {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
 
     const cookieOptions = {
       httpOnly: true,
@@ -172,4 +176,68 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, verifyUser, loginUser };
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {}
+};
+
+const logoutUser = async (req, res) => {
+  try {
+    res.cookie("token", "", {});
+    res.status(200).json({
+      success: true,
+      message: "Logged out SuccessFully",
+    });
+  } catch (error) {}
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    // get email from req.body
+    // find user based on email
+    // reset token + reset expiry
+    // user save
+    // send email
+  } catch (error) {}
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    // collect token from params
+    // password from body
+    //
+    const { token } = req.params;
+    const { password } = req.body;
+    try {
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpieres: { $gt: Date.now() },
+      });
+      // set pass in user
+      // reset token field, resetExpiery - remove
+    } catch (error) {}
+  } catch (error) {}
+};
+
+export {
+  registerUser,
+  verifyUser,
+  loginUser,
+  getMe,
+  logoutUser,
+  forgotPassword,
+  resetPassword,
+};
