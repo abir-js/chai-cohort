@@ -1,24 +1,28 @@
-import * as React from 'react'
-import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { useNotification } from '../context/NotificationContext'
+import * as React from "react";
+import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { useNotification } from "../context/NotificationContext";
+import { useCartStore } from "../store/cartStore";
 
 export const Route = createRootRoute({
   component: RootComponent,
-})
+});
 
 function RootComponent() {
-  const {count, addNotification} = useNotification()
+  const { count } = useNotification();
+  const cartCount = useCartStore((state) => state.cart.length);
+  const addToCart = useCartStore((state) => state.addToCart);
+  
   return (
     <React.Fragment>
       <div>Hello "__root"!</div>
-       <div className="p-2 flex gap-2">
+      <div className="p-2 flex gap-2">
         <Link to="/" className="[&.active]:font-bold">
           Home
-        </Link>{' '}
+        </Link>{" "}
         <Link to="/about" className="[&.active]:font-bold">
           About
-        </Link>{' '}
+        </Link>{" "}
         <Link to="/products" className="[&.active]:font-bold">
           Product
         </Link>
@@ -27,5 +31,5 @@ function RootComponent() {
       <Outlet />
       <TanStackRouterDevtools />
     </React.Fragment>
-  )
+  );
 }
