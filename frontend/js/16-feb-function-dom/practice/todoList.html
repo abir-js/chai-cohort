@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f0f2f5;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 500px;
+      }
+
+      .input {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      #task {
+        flex: 1;
+        height: 40px;
+        padding: 8px 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      #add-btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #add-btn:hover {
+        background-color: #218838;
+      }
+
+      .show-task ul {
+        list-style: none;
+      }
+
+      .show-task ul li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        transition: transform 0.2s;
+      }
+
+      .del-btn {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .del-btn:hover {
+        background-color: #c82333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="input">
+        <input id="task" type="text" placeholder="Enter task" />
+        <button id="add-btn">Add</button>
+      </div>
+
+      <div class="show-task">
+        <ul></ul>
+      </div>
+    </div>
+
+    <script>
+      const todoInput = document.getElementById("task");
+      const addBtn = document.getElementById("add-btn");
+
+      addBtn.addEventListener("click", () => {
+        const todoValue = todoInput?.value.trim();
+        if (!todoValue) return;
+
+        const li = document.createElement("li");
+        li.innerText = todoValue;
+
+        const delBtn = document.createElement("button");
+        delBtn.innerText = "X";
+        delBtn.classList.add("del-btn");
+
+        delBtn.addEventListener("click", () => {
+          li.remove();
+        });
+
+        li.appendChild(delBtn);
+        document.querySelector("ul").appendChild(li);
+        todoInput.value = "";
+        todoInput.focus();
+      });
+    </script>
+  </body>
+</html>
