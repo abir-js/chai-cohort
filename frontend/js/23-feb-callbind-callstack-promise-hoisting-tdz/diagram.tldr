@@ -28,7 +28,7 @@
 			"com.tldraw.shape.highlight": 1,
 			"com.tldraw.shape.embed": 4,
 			"com.tldraw.shape.image": 5,
-			"com.tldraw.shape.video": 3,
+			"com.tldraw.shape.video": 4,
 			"com.tldraw.binding.arrow": 1
 		}
 	},
@@ -36,9 +36,9 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 1895.4104789667895,
-			"y": -1150.3775415577431,
-			"lastActivityTimestamp": 1749657047400,
+			"x": -3286.680357046905,
+			"y": 115.3742908740744,
+			"lastActivityTimestamp": 0,
 			"meta": {}
 		},
 		{
@@ -665,9 +665,9 @@
 			"typeName": "shape"
 		},
 		{
-			"x": 2225.1847600069364,
-			"y": 2505.3480480671215,
-			"z": 0.10775142285282611,
+			"x": 3286.680357046905,
+			"y": -115.3742908740744,
+			"z": 0.05,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
@@ -953,38 +953,7 @@
 		{
 			"editingShapeId": null,
 			"croppingShapeId": null,
-			"selectedShapeIds": [
-				"shape:1vU__SfvxQEsQfyvtREhq",
-				"shape:LVvSxY_plYM4FpLWRLhzP",
-				"shape:JBX3BbT_NnJ8w6KRCdQdW",
-				"shape:wS0Wr67OiVSy9UaIVUb-0",
-				"shape:7tfdzJ2VuxXGPp1Qv1SAR",
-				"shape:ms0H94dnfP7Cx3IDSJG_X",
-				"shape:6f5k4mFtwYBFr3fGJcu4V",
-				"shape:cBA-BDQqmD-bDJZC6zVto",
-				"shape:_wUqikX6WIIDZGroFXDLj",
-				"shape:ZTGavIT17IbtEbt_ldgmd",
-				"shape:TKLV3gf5ce_KROT69kGXf",
-				"shape:ETBoIs8EKRFbwpez3MFqc",
-				"shape:ldrdXH3_0FLxQekI9HnSZ",
-				"shape:3ofFdJCxbkvQ--MUJXOd5",
-				"shape:DB8xiUd8oPIqX3L3Zj6D7",
-				"shape:B06-8uVj8wnPM8Uv3D13R",
-				"shape:DPaZnwVVhi6srtfA5nT-w",
-				"shape:l4PYaBmpzyiMPzeWqGnGC",
-				"shape:LGx1z4rSsUhlRQ_TFsEzB",
-				"shape:S216xGpOPbqQGS9GmrMjd",
-				"shape:LxnSuEbe2EaeRIwZZkwif",
-				"shape:E6OSPuyrSr7PCLRuZLjRd",
-				"shape:YNgrxyLtvq_nYNgtRAIZ2",
-				"shape:v7usSYOMs0R_SAC-RodkQ",
-				"shape:aew_-GWpSFKVFPhwyDt6L",
-				"shape:5b3Fq9eg7uNO5TvB90lNG",
-				"shape:6ItRoeI2S6KQUdFuoJQPl",
-				"shape:lGWemKZRhopddnFemNL5y",
-				"shape:ZVHV8iS5JnVrIEycIm4PC",
-				"shape:ITP7J2kDkskcnuCgEKtY9"
-			],
+			"selectedShapeIds": [],
 			"hoveredShapeId": null,
 			"erasingShapeIds": [],
 			"hintingShapeIds": [],
@@ -2436,7 +2405,7 @@
 			"brush": null,
 			"scribbles": [],
 			"cursor": {
-				"type": "nesw-resize",
+				"type": "default",
 				"rotation": 0
 			},
 			"isFocusMode": false,
@@ -2446,8 +2415,8 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 592,
-				"h": 558
+				"w": 422,
+				"h": 310
 			},
 			"insets": [
 				false,
@@ -2464,7 +2433,7 @@
 			"isFocused": true,
 			"devicePixelRatio": 1.5,
 			"isCoarsePointer": false,
-			"isHoveringCanvas": true,
+			"isHoveringCanvas": null,
 			"openMenus": [],
 			"isChangingStyle": false,
 			"isReadonly": false,
