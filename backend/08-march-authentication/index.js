@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import mongoose from "mongoose";
+import db from "./utils/db.js";
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4000;
 //?cors
 app.use(
   cors({
-    origin: `http://localhost:${PORT}`,
+    origin: process.env.BASE_URL,
     credentials: true,
     methods: ["GET", "POST", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -28,8 +28,9 @@ app.get("/abir", (req, res) => {
   res.status(200).json({ message: "Abir!" });
 });
 
+//? Connecting to database
+await db();
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
