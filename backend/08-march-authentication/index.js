@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import db from "./utils/db.js";
 
+// import all routes
+import userRoutes from "./routes/user.routes.js";
+
 dotenv.config();
 
 const app = express();
@@ -24,12 +27,11 @@ app.get("/", (req, res) => {
   res.send("Hello, Express!");
 });
 
-app.get("/abir", (req, res) => {
-  res.status(200).json({ message: "Abir!" });
-});
-
 //? Connecting to database
 await db();
+
+//? User Routes
+app.use("/api/v1/users", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
