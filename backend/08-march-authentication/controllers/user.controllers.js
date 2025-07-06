@@ -83,11 +83,46 @@ const registerUser = async (req, res) => {
     });
   }
 };
+
 const verifyUser = async (req, res) => {
-  res.send("User Registered Successfully");
-};
-const loginUser = async (req, res) => {
-  res.send("User Registered Successfully");
+  /**
+   * * get token from url
+   * * validate token
+   * * find user based on token
+   * * if not
+   * * set isVerified field to true
+   * * remove verification token
+   * * return response
+   */
+  //? get token from url
+  const { token } = req.params;
+  //? validate token
+  if (!token) {
+    return res.status(400).json({
+      message: "Invalid verification token",
+    });
+  }
+
+  //? find user based on token
+  const user = await User.findOne({ verificationToken: token });
+  if (!token) {
+    return res.status(400).json({
+      message: "Invalid verification token",
+    });
+  }
+
+  //? set isverified true
+  user.isVerified = true;
+
+  //? remove verification token
+  user.verificationToken = undefined;
+
+  await user.save();
 };
 
-export { registerUser };
+const loginUser = async (req, res) => {
+  
+};
+
+export { registerUser, verifyUser, loginUser };
+
