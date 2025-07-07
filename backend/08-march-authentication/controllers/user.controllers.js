@@ -5,26 +5,17 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
-  /**
-   **  1. get user data
-   **  2. check if user exists
-   **  3. if exists,
-   **         return "User already exists"
-   **  4. create user in db
-   **  5. create a verification token
-   **  6. save in db and send to user using email
-   **  7. send success response
-   */
   //? 1. get user data
   const { name, email, password } = req.body;
 
+  //? 2. validate user data
   if (!name || !email || !password) {
     return res.status(400).json({
       message: "All fields are required",
     });
   }
 
-  //? 2. check if user exists
+  //? 3. check if user already exists
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -33,7 +24,7 @@ const registerUser = async (req, res) => {
       });
     }
 
-    //? 4. create user in db
+    //? 4. create new user
     const newUser = await User.create({
       name,
       email,
@@ -87,63 +78,50 @@ const registerUser = async (req, res) => {
 };
 
 const verifyUser = async (req, res) => {
-  /**
-   * * get token from url
-   * * validate token
-   * * find user based on token
-   * * if not
-   * * set isVerified field to true
-   * * remove verification token
-   * * return response
-   */
-  //? get token from url
+  //? 1. Get token from URL
   const { token } = req.params;
-  //? validate token
+  console.log("Token received:", token);
+
+  //? 2. Validate token
   if (!token) {
     return res.status(400).json({
       message: "Invalid verification token",
     });
   }
 
-  //? find user based on token
+  //? 3. Find user based on token
   const user = await User.findOne({ verificationToken: token });
-  if (!token) {
+
+  if (!user) {
     return res.status(400).json({
-      message: "Invalid verification token",
+      message: "Invalid or expired verification token",
     });
   }
 
-  //? set isverified true
+  //? 4. Set isVerified true and remove token
   user.isVerified = true;
-
-  //? remove verification token
   user.verificationToken = undefined;
-
   await user.save();
+
+  //? 5. Send success response (you were missing this)
+  return res.status(200).json({
+    success: true,
+    message: "Email verified successfully!",
+  });
 };
 
 const loginUser = async (req, res) => {
-  /**
-   * ? 1. get email and password
-   * ? 2. login using session
-   * ?      i. generate session token,
-   * ?      ii. in db, give to user
-   * ?      iii. verify for user's every action
-   * ? 3. loggin using JWT
-   * ?      i. generate JWT token
-   * ?      ii. in db, give to user
-   * ?      iii. verify for user's every action
-   * ? 3. return response
-   */
-
+  //? 1. Get user data
   const { email, password } = req.body;
 
+  //? 2. Validate user data
   if (!email || !password) {
     return res.status(400).json({
       message: "All fields are required",
     });
   }
 
+  //? 3. Check if user exists
   try {
     const user = await User.findOne({ email });
 
@@ -153,26 +131,30 @@ const loginUser = async (req, res) => {
       });
     }
 
+    //? 4. Check if password is correct
     const isMatched = await bcrypt.compare(password, user.password);
-
     if (!isMatched) {
       return res.status(400).json({
         message: "Invalid Email or password",
       });
     }
 
+    //? 5. Send success response
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 
+    //? 6. Set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
+
       maxAge: 1000 * 60 * 60 * 24,
     });
 
+    //? 7. Send success response
     res.status(200).json({
       message: "Login Successful",
       token,
@@ -182,7 +164,54 @@ const loginUser = async (req, res) => {
         role: user.role,
       },
     });
+  } catch (error) {
+    res.status(400).json({
+      message: "Login Failed",
+      error,
+    });
+  }
+};
+
+const getme = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if(!user){
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user
+    })
   } catch (error) {}
 };
 
-export { registerUser, verifyUser, loginUser };
+const logout = async (req, res) => {
+  try {
+    res.cookie('token', '', {})
+  } catch (error) {}
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+
+const resetPassword = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+
+export {
+  registerUser,
+  verifyUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  logout,
+  getme,
+};
