@@ -193,16 +193,44 @@ const getme = async (req, res) => {
 const logout = async (req, res) => {
   try {
     res.cookie('token', '', {})
+    res.status(200).json({
+      success: true,
+      message: "Logout successful"
+    })
   } catch (error) {}
 };
 
 const forgotPassword = async (req, res) => {
   try {
+    //? get email
+    //? find user based on email
+    //? reset token + reset expiery
+    //? user save
+    //? send email
   } catch (error) {}
 };
 
 const resetPassword = async (req, res) => {
   try {
+    //? collect token from params
+    //? password from body
+    //? find user 
+    const {token} = req.params
+    const {password} = req.body
+
+    try {
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: {$gt: Date.now()}
+      })
+      //? set password in user
+
+      //? reset resetToken and resetExpiry
+
+      //? save
+    } catch (error) {
+      
+    }
   } catch (error) {}
 };
 
