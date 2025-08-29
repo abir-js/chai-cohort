@@ -176,7 +176,7 @@ const getme = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
 
-    if(!user){
+    if (!user) {
       return res.status(400).json({
         success: false,
         message: "User not found",
@@ -185,18 +185,23 @@ const getme = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      user
-    })
-  } catch (error) {}
+      user,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "User not found",
+    });
+  }
 };
 
 const logout = async (req, res) => {
   try {
-    res.cookie('token', '', {})
+    res.cookie("token", "", {});
     res.status(200).json({
       success: true,
-      message: "Logout successful"
-    })
+      message: "Logout successful",
+    });
   } catch (error) {}
 };
 
@@ -214,23 +219,21 @@ const resetPassword = async (req, res) => {
   try {
     //? collect token from params
     //? password from body
-    //? find user 
-    const {token} = req.params
-    const {password} = req.body
+    //? find user
+    const { token } = req.params;
+    const { password } = req.body;
 
     try {
       const user = await User.findOne({
         resetPasswordToken: token,
-        resetPasswordExpires: {$gt: Date.now()}
-      })
+        resetPasswordExpires: { $gt: Date.now() },
+      });
       //? set password in user
 
       //? reset resetToken and resetExpiry
 
       //? save
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   } catch (error) {}
 };
 
