@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import connectDB from "./utils/db.js";
 
 dotenv.config();
 
@@ -23,6 +24,12 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(PORT, () => {
-  console.log("Example app listening on port 3000!");
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Example app listening on port ${PORT}!`);
+    });
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
