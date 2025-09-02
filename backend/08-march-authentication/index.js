@@ -20,6 +20,11 @@ app.use(
   })
 );
 
+// Routes
+import authRoutes from "./routes/auth.routes.js"
+
+app.use("/api/v1/auth", authRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

@@ -27,16 +27,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    verificationToken: {
+      type: String,
+    },
+    verificationExpires: {
+      type: Date,
+    },
     passwordResetToken: {
       type: String,
     },
     passwordResetExpires: {
-      type: Date,
-    },
-    emailVerificationToken: {
-      type: String,
-    },
-    emailVerificationExpires: {
       type: Date,
     },
   },
