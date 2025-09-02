@@ -121,7 +121,9 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -131,6 +133,7 @@ const loginUser = async (req, res) => {
     });
 
     res.status(200).json({
+      success: true,
       message: "User logged in successfully",
       user,
     });
@@ -141,4 +144,34 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, verifyUser, loginUser };
+const getProfile = async (req, res) => {
+
+}
+
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie("token");
+        res.status(200).json({
+            message: "User logged out successfully",
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            message: "Error while logging out user",
+        })
+    }
+};
+
+const forgotPassword = async (req, res) => {};
+
+const resetPassword = async (req, res) => {};
+
+export {
+  registerUser,
+  verifyUser,
+  loginUser,
+  getProfile,
+  logoutUser,
+  forgotPassword,
+  resetPassword,
+};
