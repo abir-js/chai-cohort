@@ -47,7 +47,6 @@ const registerUser = async (req, res) => {
       message: "User registered successfully",
       user: newUser,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Error registering user",
@@ -58,11 +57,30 @@ const registerUser = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   try {
+    const { token } = req.params;
 
-    const {token} = req.params; 
+    if (!token) {
+      res.status(400).json({
+        message: "Token is required",
+      });
+    }
 
-    
+    const user = await User.findOne({ verificationToken: token });
 
+    if (!user) {
+      res.status(404).json({
+        message: "Invalid token",
+      });
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.status(200).json({
+      message: "User verified successfully",
+      user,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error while verifying user",
@@ -70,4 +88,49 @@ const verifyUser = async (req, res) => {
   }
 };
 
-export { registerUser, verifyUser };
+const loginUser = async (req, res) => {
+  try {
+
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    if (!user.isVerified) {
+      res.status(401).json({
+        message: "User is not verified",
+      });
+    }
+
+    const isPasswordValid = await user.comparePassword(password);
+
+    if (!isPasswordValid) {
+      res.status(401).json({
+        message: "Invalid credentials",
+      });
+    }
+
+    res.status(200).json({
+      message: "User logged in successfully",
+      user,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error while logging in user",
+    });
+  }
+};
+
+export { registerUser, verifyUser, loginUser };
