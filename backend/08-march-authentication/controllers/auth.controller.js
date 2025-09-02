@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import User from "../models/user.model.js";
 import { sendEmail } from "../utils/mail.js";
+import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
   try {
@@ -90,7 +91,6 @@ const verifyUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -103,13 +103,7 @@ const loginUser = async (req, res) => {
 
     if (!user) {
       res.status(404).json({
-        message: "User not found",
-      });
-    }
-
-    if (!user.isVerified) {
-      res.status(401).json({
-        message: "User is not verified",
+        message: "User not found, invalid credentials",
       });
     }
 
@@ -121,11 +115,25 @@ const loginUser = async (req, res) => {
       });
     }
 
+    if (!user.isVerified) {
+      res.status(401).json({
+        message: "User is not verified. Please verify your email.",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       message: "User logged in successfully",
       user,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Error while logging in user",
