@@ -145,21 +145,39 @@ const loginUser = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
 
-}
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error while getting user profile",
+    })
+  }
+};
 
 const logoutUser = async (req, res) => {
-    try {
-        res.clearCookie("token");
-        res.status(200).json({
-            message: "User logged out successfully",
-        });
-        
-    } catch (error) {
-        res.status(500).json({
-            message: "Error while logging out user",
-        })
-    }
+  try {
+    res.clearCookie("token");
+    res.status(200).json({
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error while logging out user",
+    });
+  }
 };
 
 const forgotPassword = async (req, res) => {};
