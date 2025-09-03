@@ -163,7 +163,7 @@ const getProfile = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error while getting user profile",
-    })
+    });
   }
 };
 
@@ -180,9 +180,39 @@ const logoutUser = async (req, res) => {
   }
 };
 
-const forgotPassword = async (req, res) => {};
+const forgotPassword = async (req, res) => {
+  try {
+    // get email from request
+    // find user by email
+    // reset token + reset expiry => Date.now() + 10min
+    // save user
+    // send email
+  } catch (error) {}
+};
 
-const resetPassword = async (req, res) => {};
+const resetPassword = async (req, res) => {
+  // get token from params
+  // get password from requestbody
+  const { token } = req.params;
+  const { password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      passwordResetToken: token,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Token is invalid or has expired",
+      });
+    }
+
+    // set new password
+    // reset token + expiry
+    // save user
+  } catch (error) {}
+};
 
 export {
   registerUser,
