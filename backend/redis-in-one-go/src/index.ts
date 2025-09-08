@@ -1,11 +1,37 @@
 import express from "express";
 import axios from "axios";
 import { Redis } from "ioredis";
+import http from "http";
+import { Server } from "socket.io";
 
 const app = express();
+
+const state = new Array(100).fill(false);
+
+//  HTTP Server
+const httpServer = http.createServer(app);
+const io = new Server();
+
+io.attach(httpServer);
+
+io.on("connection", (socket) => {
+  console.log("Socket connected", socket.id);
+  socket.on('message', (data) => {
+    io.emit('server-message', data) // broadcast to all clients
+  });
+
+  socket.on('checkbox-update', (data) => {
+    state[data.index] = data.value
+    io.emit('checkbox-update', data) // broadcast to all clients
+  });
+
+});
+
 const port = process.env.PORT ?? 4000;
 
 const redis = new Redis({ host: "localhost", port: Number(6379) });
+
+app.use(express.static("./public"));
 
 app.use(async function (req, res, next) {
   const key = "rate-limit";
@@ -16,7 +42,7 @@ app.use(async function (req, res, next) {
     redis.expire(key, 20);
   }
 
-  if (value && Number(value) > 10) {
+  if (value && Number(value) > 100) {
     return res.status(429).json({
       message: "Too many requests",
     });
@@ -25,6 +51,12 @@ app.use(async function (req, res, next) {
   redis.incr(key);
   next();
 });
+
+app.get("/state", (req, res) => {
+  return res.status(200).json({
+    state,
+  });
+})
 
 app.get("/", (req, res) => {
   return res.status(200).json({
@@ -57,6 +89,6 @@ app.get("/books", async (req, res) => {
   return res.json({ totalPageCount });
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on port: ${port}`);
-});
+httpServer.listen(port, () =>
+  console.log(`HTTP server is listening on port ${port}`)
+);
