@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import pkg from '@prisma/client';
+const {PrismaClient} = pkg;
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -50,9 +51,8 @@ const registerUser = async (req, res) => {
   }
 };
 
-
 const loginUser = async (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({
@@ -62,12 +62,11 @@ const loginUser = async (req, res) => {
   }
 
   try {
-
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
-    })
+    });
 
     if (!user) {
       return res.status(404).json({
@@ -76,26 +75,30 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = await bcrypt.compare(password, user.password);
 
-    if(!isMatch) {
+    if (!isMatch) {
       return res.status(404).json({
         success: false,
         message: "Invalid credentials",
       });
     }
 
-    const token = jwt.sign({
-      id: user.id
-    }, process.env.JWT_SECRET, {
-      expiresIn: "1d"
-    });
+    const token = jwt.sign(
+      {
+        id: user.id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({
@@ -104,17 +107,14 @@ const loginUser = async (req, res) => {
       user: {
         id: user.id,
         name: user.name,
-        email: user.email
-      }
-    })
-
-    
+        email: user.email,
+      },
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Error while logging in user",
-    })
+    });
   }
-
-}
-export { registerUser };
+};
+export { registerUser, loginUser };
