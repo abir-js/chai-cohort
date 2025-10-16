@@ -48,3 +48,21 @@ npx prisma format
 ```
 
 This command will format your Prisma schema file.
+
+
+```js
+model User {
+  id                   String   @id @default(cuid())
+  name                 String
+  phone                String
+  email                String   @unique
+  password             String
+  role                 String   @default("user")
+  isVerified           Boolean  @default(false)
+  verificationToken    String?
+  passwordResetToken   String?
+  passwordResetExpiery String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now())
+}
+```
