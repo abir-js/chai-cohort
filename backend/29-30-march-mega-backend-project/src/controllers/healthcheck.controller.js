@@ -1,5 +1,4 @@
 import { ApiResponse } from "../utils/api-response.js";
-import { User } from "../models/user.model.js";
 
 const healthCheck = async (req, res) => {
   try {
